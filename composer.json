@@ -1,0 +1,48 @@
+{
+    "name": "mostafaznv/simple-sdp",
+    "description": "SDP wrapper",
+    "keywords": [
+        "sdp",
+        "telecommunication",
+        "ako",
+        "ssdp",
+        "laravel",
+        "packalyst",
+        "mostafaznv"
+    ],
+    "license": "MIT",
+    "support": {
+        "issues": "https://github.com/mostafaznv/simple-sdp/issues",
+        "source": "https://github.com/mostafaznv/simple-sdp",
+        "docs": "https://github.com/mostafaznv/simple-sdp/blob/master/README.md"
+    },
+    "authors": [
+        {
+            "name": "mostafaznv",
+            "email": "mostafa.zeinivand@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.6.4",
+        "laravel/framework": "5.3.* || 5.4.* || 5.5.* || 5.6.* || 5.7.*",
+        "guzzlehttp/guzzle": "^6.3"
+    },
+    "require-dev": {
+    },
+    "autoload": {
+        "psr-4": {
+            "Mostafaznv\\SimpleSDP\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Mostafaznv\\SimpleSDP\\SimpleSDPServiceProvider"
+            ],
+            "aliases": {
+                "SimpleSDP": "Mostafaznv\\SimpleSDP\\SimpleSDP"
+            }
+        }
+    }
+}
