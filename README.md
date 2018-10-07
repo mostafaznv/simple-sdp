@@ -58,114 +58,96 @@ SimpleSDP is a laravel package that makes it easy to send SMS and OTP(One Time P
 
 ## Usage
 ```php
-<?php
-   try {   
-       $msisdn = '9891200012345';
-       $data = [
-           'content_id' => 12,
-           'message' => 'message text'
-       ];   
-       
-       $sdp = app('simple-sdp')->sendMt($msisdn, $data); // use simple sdp instance with app() method.
-    
-       // or
-    
-       $sdp = \SimpleSDP::sendMt($msisdn, $data); // send mt to default driver (simple-sdp can load default driver from config file).
-       
-       // or
-    
-       $sdp = \SimpleSDP::AKO()->sendMt($msisdn, $data); // define driver manually
-       
-       // or
-       
-       $sdp = \SimpleSDP::make(new \Mostafaznv\SimpleSDP\SSDP\SSDP())->sendMt($msisdn, $data); // define driver manually
-       
-       return response()->json($sdp, 200);
-      
-   } 
-   catch (\Exception $e) {   
-        return response()->json($e->getMessage(), 500);
-   }
-?>
+try {   
+   $msisdn = '9891200012345';
+   $data = [
+       'content_id' => 12,
+       'message' => 'message text'
+   ];   
+   
+   $sdp = app('simple-sdp')->sendMt($msisdn, $data); // use simple sdp instance with app() method.
+
+   // or
+
+   $sdp = \SimpleSDP::sendMt($msisdn, $data); // send mt to default driver (simple-sdp can load default driver from config file).
+   
+   // or
+
+   $sdp = \SimpleSDP::AKO()->sendMt($msisdn, $data); // define driver manually
+   
+   // or
+   
+   $sdp = \SimpleSDP::make(new \Mostafaznv\SimpleSDP\SSDP\SSDP())->sendMt($msisdn, $data); // define driver manually
+   
+   return response()->json($sdp, 200);
+  
+} 
+catch (\Exception $e) {   
+    return response()->json($e->getMessage(), 500);
+}
 ```
 
 ## Available Functions
 1. #### Send MT
     ```php
-    <?php
-        $msisdn = '9891200012345';
-        $data = [
-            'content_id' => 12,
-            'message' => 'message text'
-        ];
-        
-        app('simple-sdp')->sendMt($msisdn, $data);
-    ?>
+    $msisdn = '9891200012345';
+    $data = [
+        'content_id' => 12,
+        'message' => 'message text'
+    ];
+    
+    app('simple-sdp')->sendMt($msisdn, $data);
     ```
     
 2. #### Charge
     ```php
-    <?php
-        $msisdn = '9891200012345';
-        $data = [
-            'content_id' => 12
-        ];
-        
-        app('simple-sdp')->charge($msisdn, $data);
-    ?>
+    $msisdn = '9891200012345';
+    $data = [
+        'content_id' => 12
+    ];
+    
+    app('simple-sdp')->charge($msisdn, $data);
     ```
     
 3. #### Send OTP
     ```php
-    <?php
-        $msisdn = '9891200012345';
-        $data = [
-            'content_id' => 12
-        ];
-        
-        app('simple-sdp')->sendOtp($msisdn, $data);
-    ?>
+    $msisdn = '9891200012345';
+    $data = [
+        'content_id' => 12
+    ];
+    
+    app('simple-sdp')->sendOtp($msisdn, $data);
     ```
     
 4. #### Confirm OTP
     ```php
-    <?php
-        $msisdn = '9891200012345';
-        $code = 2323;
-        $data = [
-            'content_id' => 12
-        ];
-        
-        app('simple-sdp')->confirmOtp($msisdn, $code, $data);
-    ?>
+    $msisdn = '9891200012345';
+    $code = 2323;
+    $data = [
+        'content_id' => 12
+    ];
+    
+    app('simple-sdp')->confirmOtp($msisdn, $code, $data);
     ```
     
 5. #### Delivery
     ```php
-    <?php
-        app('simple-sdp')->delivery($request); // Request $request
-    ?>
+    app('simple-sdp')->delivery($request); // Request $request
     ```
     
 6. #### Batch Delivery
     ```php
-    <?php
-        app('simple-sdp')->batchDelivery($request); // Request $request
-    ?>
+    app('simple-sdp')->batchDelivery($request); // Request $request
     ```
     
 7. #### Incoming Message
     ```php
-    <?php
-        app('simple-sdp')->income($request); // Request $request
-    ?>
+    app('simple-sdp')->income($request); // Request $request
     ```
     
 8. #### Batch Mo
     ```php
-    <?php
-        app('simple-sdp')->batchMo($request); // Request $request
-    ?>
+    app('simple-sdp')->batchMo($request); // Request $request
     ```
     
 
