@@ -237,7 +237,7 @@ class SSDP extends SdpAbstract implements SdpInterface
                         $versionName = $this->request->version_name ? $this->request->version_name : null;
                         $ip = $this->request->ip();
 
-                        $this->confirmOtpLog($msisdn, $this->confirmOtpLog::OTP_APP_TYPE, $versionName, $ip);
+                        $this->logConfirmOtp($msisdn, $this->confirmOtpLog::OTP_APP_TYPE, $versionName, $ip);
 
                         $this->log('done');
                         return $this->response(true, Enum::SUCCESS_CODE);

@@ -192,7 +192,7 @@ abstract class SdpAbstract
      * @param string $ip
      * @return mixed
      */
-    protected function confirmOtpLog($msisdn, $type, $versionName = null, $ip = '0:0:0:0')
+    protected function logConfirmOtp($msisdn, $type, $versionName = null, $ip = '0:0:0:0')
     {
         $log = new $this->confirmOtpLog;
         $log->msisdn = $msisdn;
