@@ -86,7 +86,7 @@ catch (\Exception $e) {
 }
 ```
 
-## تنظیم کانفیگ درایور به صورت دستی
+## تنظیم کانفیگ درایور به صورت دستی(فقط در حالت آکو)
 شما میتوانید هنگام ایجاد یه آبجکت از سیمپل اس‌دی‌پی فایل کانفیگ جدید خود را به ورودی تابع دهید تا با مقادیر پیشفرض کانفیگ که از طریق `config/simple-sdp.php` تنظیم شده اند جایگزین کنید
 ```php
 // تنظیمات پیشفرض
@@ -97,6 +97,28 @@ $config = config('simple-sdp.new_config');
 $sdp = app('SimpleSDP')->AKO($config)->sendMt($msisdn, $data);
 
 ```
+
+## تغییر دادن ترجمه پیام‌ها
+بعضی وقتها نیاز دارید که بر اساس منطق برنامه خود، در حالت های مختلف پیام های مختلفی را به کاربر نشان دهید. با کمک این قابلیت میتوانید این کار را انجام دهید
+
+1. ویرایش فایل تنظیمات
+    ```php
+    ...
+    'trans_prefix' => 'new_prefix'
+    ```
+2. افزودن پیشوند جدید به فایل `resources/lang/vendor/simple-sdp/en/messages.php`
+    ```php
+    ...
+    'new_prefix' => [
+       'welcome'     => 'welcome',
+       'inform'      => 'inform',
+       'guide'       => 'guide',
+       'unsub-guide' => 'unsub guide',
+       'unsub'       => 'unsub',
+       'logout_text' => 'logout text',
+    ]
+    ```
+
 
 ## توابع قابل استفاده
 1. #### Send MT

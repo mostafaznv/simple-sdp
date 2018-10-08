@@ -82,6 +82,7 @@ return [
         'request_limit'             => 100,
         'confirm_otp_timeout'       => 5,
         'is_free'                   => true,
+        'trans_prefix'              => 'mt'
     ],
 
 

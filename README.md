@@ -99,6 +99,26 @@ $sdp = app('SimpleSDP')->AKO($config)->sendMt($msisdn, $data);
 
 ```
 
+## Custom Trans prefix (only available in ako)
+Sometimes you want change messages in some cases based on your project logic, with this option you can do it.
+
+1. Change config file
+    ```php
+    ...
+    'trans_prefix' => 'new_prefix'
+    ```
+2. Edit messages array in `resources/lang/vendor/simple-sdp/en/messages.php`
+    ```php
+    ...
+    'new_prefix' => [
+       'welcome'     => 'welcome',
+       'inform'      => 'inform',
+       'guide'       => 'guide',
+       'unsub-guide' => 'unsub guide',
+       'unsub'       => 'unsub',
+       'logout_text' => 'logout text',
+    ]
+    ```
 
 ## Available Functions
 1. #### Send MT

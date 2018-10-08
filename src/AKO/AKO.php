@@ -377,7 +377,7 @@ class AKO extends SdpAbstract implements SdpInterface
 
                         $this->sendMt($msisdn, [
                             'content_id' => 0,
-                            'message'    => trans("simple-sdp::messages.mt.inform")
+                            'message'    => trans("simple-sdp::messages.{$this->config['trans_prefix']}.inform")
                         ]);
 
                         break;
@@ -387,7 +387,7 @@ class AKO extends SdpAbstract implements SdpInterface
 
                         $this->sendMt($msisdn, [
                             'content_id' => 0,
-                            'message'    => trans("simple-sdp::messages.mt.guide")
+                            'message'    => trans("simple-sdp::messages.{$this->config['trans_prefix']}.guide")
                         ]);
                         break;
 
