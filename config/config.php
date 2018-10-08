@@ -80,7 +80,8 @@ return [
         'currency'                  => 'RLS',
         'service_name'              => 'service_name',
         'request_limit'             => 100,
-        'confirm_otp_timeout'       => 5
+        'confirm_otp_timeout'       => 5,
+        'is_free'                   => true,
     ],
 
 

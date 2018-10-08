@@ -86,13 +86,26 @@ catch (\Exception $e) {
 }
 ```
 
+## تنظیم کانفیگ درایور به صورت دستی
+شما میتوانید هنگام ایجاد یه آبجکت از سیمپل اس‌دی‌پی فایل کانفیگ جدید خود را به ورودی تابع دهید تا با مقادیر پیشفرض کانفیگ که از طریق `config/simple-sdp.php` تنظیم شده اند جایگزین کنید
+```php
+// تنظیمات پیشفرض
+$sdp = app('SimpleSDP')->AKO()->sendMt($msisdn, $data); 
+
+// تنظیمات جدید و داینامیک
+$config = config('simple-sdp.new_config');
+$sdp = app('SimpleSDP')->AKO($config)->sendMt($msisdn, $data);
+
+```
+
 ## توابع قابل استفاده
 1. #### Send MT
     ```php
     $msisdn = '9891200012345';
     $data = [
         'content_id' => 12,
-        'message' => 'message text'
+        'message' => 'message text',
+        'is_free' => true', // optional
     ];
     
     app('SimpleSDP')->sendMt($msisdn, $data);

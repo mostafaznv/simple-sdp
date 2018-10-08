@@ -87,13 +87,27 @@ catch (\Exception $e) {
 }
 ```
 
+## Dynamic Configuration
+You can pass a new config array to SimpleSDP instance to replace with default config array.
+```php
+// default config
+$sdp = app('SimpleSDP')->AKO()->sendMt($msisdn, $data); 
+
+// new config
+$config = config('simple-sdp.new_config');
+$sdp = app('SimpleSDP')->AKO($config)->sendMt($msisdn, $data);
+
+```
+
+
 ## Available Functions
 1. #### Send MT
     ```php
     $msisdn = '9891200012345';
     $data = [
         'content_id' => 12,
-        'message' => 'message text'
+        'message' => 'message text',
+        'is_free' => true', // optional
     ];
     
     app('SimpleSDP')->sendMt($msisdn, $data);

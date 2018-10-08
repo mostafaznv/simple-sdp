@@ -36,7 +36,7 @@ class AKO extends SdpAbstract implements SdpInterface
 
     public function sendMt($msisdn, Array $data)
     {
-        $this->validate($data, ['content_id' => 'required', 'message' => 'required']);
+        $this->validate($data, ['content_id' => 'required', 'message' => 'required', 'is_free' => 'nullable|boolean']);
 
         $this->log('start send mt to ' . $msisdn);
 
@@ -57,7 +57,7 @@ class AKO extends SdpAbstract implements SdpInterface
             'amount'      => $this->config['amount'],
             'currency'    => $this->config['currency'],
             'message'     => $data['message'],
-            'is_free'     => true,
+            'is_free'     => isset($data['is_free']) ? $data['is_free'] : $this->config['is_free'],
             'correlator'  => $this->config['short_code'] . '-' . $this->uniqid(),
             'servicename' => $this->config['service_name'],
         ];

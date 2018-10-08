@@ -32,6 +32,10 @@ class SdpResolver
     public function __call($name, $arguments)
     {
         if (in_array(strtoupper($name), $this->supportedDrivers())) {
+            if (isset($arguments[0])) {
+                return $this->make(strtolower($name), $arguments[0]);
+            }
+
             return $this->make(strtolower($name));
         }
 
@@ -78,10 +82,11 @@ class SdpResolver
      * Create an instance of SDP driver.
      *
      * @param $driver
+     * @param null $customConfig
      * @return $this
      * @throws DriverNotFoundException
      */
-    public function make($driver)
+    public function make($driver, $customConfig = null)
     {
         if ($driver InstanceOf AKO) {
             $name = Enum::AKO;
@@ -101,6 +106,10 @@ class SdpResolver
         }
         else {
             throw new DriverNotFoundException;
+        }
+
+        if ($customConfig) {
+            $config = $customConfig;
         }
 
         $this->driver->setDriverName($name);
