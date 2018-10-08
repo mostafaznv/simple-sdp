@@ -75,6 +75,7 @@ class AKO extends SdpAbstract implements SdpInterface
                 $mt->message = $data['message'];
                 $mt->message_id = $requestBody['correlator'];
                 $mt->type = $this->mobileTerminated::DEFAULT_TYPE;
+                $mt->driver = $this->driverName;
                 $mt->creator_ip = $this->request->ip();
                 $mt->save();
 
@@ -127,6 +128,7 @@ class AKO extends SdpAbstract implements SdpInterface
                 $mt->message = '';
                 $mt->message_id = $requestBody['correlator'];
                 $mt->type = $this->mobileTerminated::CHARGE_TYPE;
+                $mt->driver = $this->driverName;
                 $mt->creator_ip = $this->request->ip();
                 $mt->save();
 
@@ -178,6 +180,7 @@ class AKO extends SdpAbstract implements SdpInterface
                 $mt->message_id = $requestBody['referencecode'];
                 $mt->transaction_id = $result->data->statusInfo->OTPTransactionId;
                 $mt->type = $this->mobileTerminated::OTP_TYPE;
+                $mt->driver = $this->driverName;
                 $mt->creator_ip = $this->request->ip();
                 $mt->save();
 
@@ -367,6 +370,7 @@ class AKO extends SdpAbstract implements SdpInterface
             $mg->message = $message;
             $mg->transaction_id = $transactionId;
             $mg->received_at = Carbon::now();
+            $mg->driver = $this->driverName;
             $mg->creator_ip = $ip;
 
             if ($mg->save()) {

@@ -17,6 +17,7 @@ class CreateMobileTerminatedTable extends Migration
             $table->text('message');
             $table->string('message_id', 255);
             $table->string('transaction_id')->nullable();
+            $table->string('driver', 85);
             $table->ipAddress('creator_ip');
             $table->ipAddress('updater_ip')->nullable();
 

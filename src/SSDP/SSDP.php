@@ -68,6 +68,7 @@ class SSDP extends SdpAbstract implements SdpInterface
                     $mt->message = $requestBody['message'];
                     $mt->message_id = $requestBody['messageId'];
                     $mt->transaction_id = $requestBody['messageId'];
+                    $mt->driver = $this->driverName;
                     $mt->creator_ip = $this->request->ip();
                     $mt->save();
 
@@ -122,6 +123,7 @@ class SSDP extends SdpAbstract implements SdpInterface
                     $mt->message = $requestBody['message'];
                     $mt->message_id = $requestBody['messageId'];
                     $mt->type = $this->mobileTerminated::CHARGE_TYPE;
+                    $mt->driver = $this->driverName;
                     $mt->creator_ip = $this->request->ip();
                     $mt->save();
 
@@ -176,6 +178,7 @@ class SSDP extends SdpAbstract implements SdpInterface
                     $mt->message_id = $requestBody['messageId'];
                     $mt->transaction_id = $result->transactionId;
                     $mt->type = $this->mobileTerminated::OTP_TYPE;
+                    $mt->driver = $this->driverName;
                     $mt->creator_ip = $this->request->ip();
                     $mt->save();
 
@@ -312,6 +315,7 @@ class SSDP extends SdpAbstract implements SdpInterface
             $mg->message = $message;
             $mg->transaction_id = $request->ts ? $request->ts : '--';
             $mg->received_at = Carbon::now();
+            $mg->driver = $this->driverName;
             $mg->creator_ip = $request->ip();
             $mg->save();
 

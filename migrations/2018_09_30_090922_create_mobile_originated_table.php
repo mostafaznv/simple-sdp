@@ -14,6 +14,7 @@ class CreateMobileOriginatedTable extends Migration
             $table->text('message');
             $table->timestamp('received_at');
             $table->string('transaction_id');
+            $table->string('driver', 85);
             $table->ipAddress('creator_ip');
 
 
