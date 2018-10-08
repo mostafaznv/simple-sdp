@@ -6,8 +6,8 @@ use Illuminate\Support\ServiceProvider;
 
 class SimpleSDPServiceProvider extends ServiceProvider
 {
-    const VERSION = '0.0.1';
-    
+    const VERSION = '0.0.2';
+
     // todo - test
 
 
