@@ -65,7 +65,7 @@ try {
        'message' => 'message text'
    ];   
    
-   $sdp = app('simple-sdp')->sendMt($msisdn, $data); // use simple sdp instance with app() method.
+   $sdp = app('SimpleSDP')->sendMt($msisdn, $data); // use simple sdp instance with app() method.
 
    // or
 
@@ -96,7 +96,7 @@ catch (\Exception $e) {
         'message' => 'message text'
     ];
     
-    app('simple-sdp')->sendMt($msisdn, $data);
+    app('SimpleSDP')->sendMt($msisdn, $data);
     ```
     
 2. #### Charge
@@ -106,7 +106,7 @@ catch (\Exception $e) {
         'content_id' => 12
     ];
     
-    app('simple-sdp')->charge($msisdn, $data);
+    app('SimpleSDP')->charge($msisdn, $data);
     ```
     
 3. #### Send OTP
@@ -116,7 +116,7 @@ catch (\Exception $e) {
         'content_id' => 12
     ];
     
-    app('simple-sdp')->sendOtp($msisdn, $data);
+    app('SimpleSDP')->sendOtp($msisdn, $data);
     ```
     
 4. #### Confirm OTP
@@ -127,27 +127,27 @@ catch (\Exception $e) {
         'content_id' => 12
     ];
     
-    app('simple-sdp')->confirmOtp($msisdn, $code, $data);
+    app('SimpleSDP')->confirmOtp($msisdn, $code, $data);
     ```
     
 5. #### Delivery
     ```php
-    app('simple-sdp')->delivery($request); // Request $request
+    app('SimpleSDP')->delivery($request); // Request $request
     ```
     
 6. #### Batch Delivery
     ```php
-    app('simple-sdp')->batchDelivery($request); // Request $request
+    app('SimpleSDP')->batchDelivery($request); // Request $request
     ```
     
 7. #### Incoming Message
     ```php
-    app('simple-sdp')->income($request); // Request $request
+    app('SimpleSDP')->income($request); // Request $request
     ```
     
 8. #### Batch Mo
     ```php
-    app('simple-sdp')->batchMo($request); // Request $request
+    app('SimpleSDP')->batchMo($request); // Request $request
     ```
     
 
