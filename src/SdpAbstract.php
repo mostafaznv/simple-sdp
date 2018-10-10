@@ -2,6 +2,7 @@
 
 namespace Mostafaznv\SimpleSDP;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
@@ -71,6 +72,13 @@ abstract class SdpAbstract
     }
 
     /**
+     * Prevent values from logging.
+     *
+     * @var array
+     */
+    protected $hidden = ['username', 'password'];
+
+    /**
      * Bootstrap function.
      */
     public function boot()
@@ -103,8 +111,46 @@ abstract class SdpAbstract
     protected function log($message, $level = 'info')
     {
         if ($this->logStatus) {
+            $message = $this->secureLog($message);
+
             $this->logger->{$level}($message);
         }
+    }
+
+    /**
+     * Remove unwanted values from log.
+     *
+     * @param $message
+     * @return array|Collection|string
+     */
+    protected function secureLog($message)
+    {
+        $star = '****';
+
+        if (is_array($message) or $message instanceof Collection) {
+            if ($message instanceof Collection) {
+                $message = $message->toArray();
+            }
+
+            foreach ($this->hidden as $item) {
+                if (isset($message[$item])) {
+                    $message[$item] = $star;
+                }
+            }
+
+            $message = json_encode($message);
+        }
+        else if (is_object($message)) {
+            foreach ($this->hidden as $item) {
+                if (isset($message->$item)) {
+                    $message->$item = $star;
+                }
+            }
+
+            $message = json_encode($message);
+        }
+
+        return $message;
     }
 
     /**

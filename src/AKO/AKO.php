@@ -62,7 +62,7 @@ class AKO extends SdpAbstract implements SdpInterface
             'servicename' => $this->config['service_name'],
         ];
 
-        $this->log(json_encode($requestBody));
+        $this->log($requestBody);
 
         $client = new Guzzle();
         $response = $client->request('POST', $url, ['form_params' => $requestBody]);
@@ -85,7 +85,7 @@ class AKO extends SdpAbstract implements SdpInterface
             }
         }
 
-        $this->log(json_encode($result), 'error');
+        $this->log($result, 'error');
 
         return $this->response(false, Enum::UNKNOWN_ERROR_CODE);
     }
@@ -115,7 +115,7 @@ class AKO extends SdpAbstract implements SdpInterface
             'correlator'  => $this->config['charging_code'] . '-' . $this->uniqid(),
         ];
 
-        $this->log(json_encode($requestBody));
+        $this->log($requestBody);
 
         $client = new Guzzle();
         $response = $client->request('POST', $url, ['form_params' => $requestBody]);
@@ -138,7 +138,7 @@ class AKO extends SdpAbstract implements SdpInterface
             }
         }
 
-        $this->log(json_encode($result), 'error');
+        $this->log($result, 'error');
 
         return $this->response(false, Enum::UNKNOWN_ERROR_CODE);
     }
@@ -164,7 +164,7 @@ class AKO extends SdpAbstract implements SdpInterface
             'amount'        => config('settings.amount'),
         ];
 
-        $this->log(json_encode($requestBody));
+        $this->log($requestBody);
 
         $client = new Guzzle();
         $response = $client->request('POST', $url, ['form_params' => $requestBody]);
@@ -312,13 +312,13 @@ class AKO extends SdpAbstract implements SdpInterface
 
         if (!in_array(false, $result)) {
             $this->log('done');
-            $this->log(json_encode($result));
+            $this->log($result);
 
             return $this->response(true, Enum::SUCCESS_CODE, null, $result);
         }
         else {
             $this->log('failed', 'error');
-            $this->log(json_encode($result), 'error');
+            $this->log($result, 'error');
 
             return $this->response(false, Enum::UNKNOWN_ERROR_CODE, null, $result);
         }
@@ -439,13 +439,13 @@ class AKO extends SdpAbstract implements SdpInterface
 
         if ($status) {
             $this->log('done');
-            $this->log(json_encode($result));
+            $this->log($result);
 
             return $this->response(true, Enum::SUCCESS_CODE, null, $result);
         }
         else {
             $this->log('failed', 'error');
-            $this->log(json_encode($result), 'error');
+            $this->log($result, 'error');
 
             return $this->response(false, Enum::UNKNOWN_ERROR_CODE, null, $result);
         }

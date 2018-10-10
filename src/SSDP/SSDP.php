@@ -53,7 +53,7 @@ class SSDP extends SdpAbstract implements SdpInterface
             'messageId' => $this->config['short_code'] . '-' . $this->uniqid(),
         ];
 
-        $this->log(json_encode($requestBody));
+        $this->log($requestBody);
 
         $client = new Guzzle();
 
@@ -83,7 +83,7 @@ class SSDP extends SdpAbstract implements SdpInterface
             return $this->response(false, Enum::UNKNOWN_ERROR_CODE, $e->getMessage());
         }
 
-        $this->log(json_encode($result), 'error');
+        $this->log($result, 'error');
         return $this->response(false, Enum::UNKNOWN_ERROR_CODE);
     }
 
@@ -107,7 +107,7 @@ class SSDP extends SdpAbstract implements SdpInterface
             'contentId'    => $data['content_id'],
         ];
 
-        $this->log(json_encode($requestBody));
+        $this->log($requestBody);
 
 
         $client = new Guzzle();
@@ -138,7 +138,7 @@ class SSDP extends SdpAbstract implements SdpInterface
             return $this->response(false, Enum::UNKNOWN_ERROR_CODE, $e->getMessage());
         }
 
-        $this->log(json_encode($result), 'error');
+        $this->log($result, 'error');
         return $this->response(false, Enum::UNKNOWN_ERROR_CODE);
     }
 
@@ -162,7 +162,7 @@ class SSDP extends SdpAbstract implements SdpInterface
             'chargingCode' => $this->config['sub_charging_code'],
         ];
 
-        $this->log(json_encode($requestBody));
+        $this->log($requestBody);
 
         $client = new Guzzle();
 
@@ -227,7 +227,7 @@ class SSDP extends SdpAbstract implements SdpInterface
 
             ];
 
-            $this->log(json_encode($requestBody));
+            $this->log($requestBody);
 
             $client = new Guzzle();
 
@@ -252,7 +252,7 @@ class SSDP extends SdpAbstract implements SdpInterface
                 return $this->response(false, Enum::UNKNOWN_ERROR_CODE, $e->getMessage());
             }
 
-            $this->log(json_encode($result), 'error');
+            $this->log($result, 'error');
             return $this->response(false, Enum::UNKNOWN_ERROR_CODE);
         }
         else {
