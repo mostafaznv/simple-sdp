@@ -131,8 +131,18 @@ Sometimes you want change messages in some cases based on your project logic, wi
     
     app('SimpleSDP')->sendMt($msisdn, $data);
     ```
+2. #### Send Batch MT (Only SSDP)
+    ```php
+    $msisdn = ['9891200012345', '9891200015432'];
+    $data = [
+        'content_id' => 12,
+        'message' => 'message text'
+    ];
     
-2. #### Charge
+    app('SimpleSDP')->sendBatchMt($msisdn, $data);
+    ```
+    
+3. #### Charge
     ```php
     $msisdn = '9891200012345';
     $data = [
@@ -142,7 +152,7 @@ Sometimes you want change messages in some cases based on your project logic, wi
     app('SimpleSDP')->charge($msisdn, $data);
     ```
     
-3. #### Send OTP
+4. #### Send OTP
     ```php
     $msisdn = '9891200012345';
     $data = [
@@ -152,7 +162,7 @@ Sometimes you want change messages in some cases based on your project logic, wi
     app('SimpleSDP')->sendOtp($msisdn, $data);
     ```
     
-4. #### Confirm OTP
+5. #### Confirm OTP
     ```php
     $msisdn = '9891200012345';
     $code = 2323;
@@ -163,22 +173,22 @@ Sometimes you want change messages in some cases based on your project logic, wi
     app('SimpleSDP')->confirmOtp($msisdn, $code, $data);
     ```
     
-5. #### Delivery
+6. #### Delivery
     ```php
     app('SimpleSDP')->delivery($request); // Request $request
     ```
     
-6. #### Batch Delivery
+7. #### Batch Delivery
     ```php
     app('SimpleSDP')->batchDelivery($request); // Request $request
     ```
     
-7. #### Incoming Message
+8. #### Incoming Message
     ```php
     app('SimpleSDP')->income($request); // Request $request
     ```
     
-8. #### Batch Mo
+9. #### Batch Mo
     ```php
     app('SimpleSDP')->batchMo($request); // Request $request
     ```

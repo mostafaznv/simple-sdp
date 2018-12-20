@@ -87,6 +87,73 @@ class SSDP extends SdpAbstract implements SdpInterface
         return $this->response(false, Enum::UNKNOWN_ERROR_CODE);
     }
 
+    public function sendBatchMt(array $msisdn, array $data)
+    {
+        $this->validate($data, ['message' => 'required']);
+
+        $this->log('start sending batch mt to ' . count($msisdn) . ' msisdn');
+
+        $body = [];
+        foreach ($msisdn as $value) {
+            $body[] = [
+                'to'        => $value,
+                'message'   => $data['message'],
+                'messageId' => $this->config['short_code'] . '-' . $this->uniqid(),
+            ];
+        }
+
+        $query = [
+            'sc'        => $this->config['short_code'],
+            'from'      => $this->config['short_code'],
+            'serviceId' => $this->config['service_id'],
+            'username'  => $this->config['username'],
+            'password'  => $this->config['password'],
+        ];
+
+        $this->log($query);
+        $this->log($body);
+
+        $client = new Guzzle();
+
+        try {
+            $url = $this->url('jtransfer/qsend');
+            $response = $client->request('POST', $url, [
+                'query' => $query,
+                'json'  => $body,
+            ]);
+
+
+            if ($response->getStatusCode() == 200) {
+                $insertData = [];
+
+                foreach ($body as $value) {
+                    $insertData[] = [
+                        'msisdn'         => $value['to'],
+                        'message'        => $value['message'],
+                        'message_id'     => $value['messageId'],
+                        'transaction_id' => $value['messageId'],
+                        'driver'         => $this->driverName,
+                        'creator_ip'     => $this->request->ip(),
+                    ];
+                }
+
+
+                $this->mobileTerminated::insert($insertData);
+
+                $this->log('done');
+
+                return $this->response(true, Enum::SUCCESS_CODE);
+            }
+        }
+        catch (GuzzleException $e) {
+            $this->log($e->getMessage(), 'error');
+            return $this->response(false, Enum::UNKNOWN_ERROR_CODE, $e->getMessage());
+        }
+
+        $this->log('error', 'error');
+        return $this->response(false, Enum::UNKNOWN_ERROR_CODE);
+    }
+
     public function charge($msisdn, Array $data)
     {
         $this->validate($data, ['content_id' => 'required']);
