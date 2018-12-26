@@ -35,7 +35,7 @@ class SSDP extends SdpAbstract implements SdpInterface
         $this->mobileOriginated = config('simple-sdp.models.mobile_originated');
     }
 
-    public function sendMt($msisdn, Array $data)
+    public function sendMt($msisdn, array $data)
     {
         $this->validate($data, ['message' => 'required']);
 
@@ -154,7 +154,7 @@ class SSDP extends SdpAbstract implements SdpInterface
         return $this->response(false, Enum::UNKNOWN_ERROR_CODE);
     }
 
-    public function charge($msisdn, Array $data)
+    public function charge($msisdn, array $data)
     {
         $this->validate($data, ['content_id' => 'required']);
 
@@ -209,7 +209,7 @@ class SSDP extends SdpAbstract implements SdpInterface
         return $this->response(false, Enum::UNKNOWN_ERROR_CODE);
     }
 
-    public function sendOtp($msisdn, Array $data)
+    public function sendOtp($msisdn, array $data)
     {
         $this->validate($data, ['content_id' => 'required']);
 
@@ -269,7 +269,7 @@ class SSDP extends SdpAbstract implements SdpInterface
 
     }
 
-    public function confirmOtp($msisdn, $code, Array $data)
+    public function confirmOtp($msisdn, $code, array $data)
     {
         $this->validate($data, ['content_id' => 'required']);
 

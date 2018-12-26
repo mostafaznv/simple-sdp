@@ -131,7 +131,7 @@ Sometimes you want change messages in some cases based on your project logic, wi
     
     app('SimpleSDP')->sendMt($msisdn, $data);
     ```
-2. #### Send Batch MT (Only SSDP)
+2. #### Send Batch MT
     ```php
     $msisdn = ['9891200012345', '9891200015432'];
     $data = [

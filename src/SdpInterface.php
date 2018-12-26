@@ -6,13 +6,15 @@ use Illuminate\Http\Request;
 
 interface SdpInterface
 {
-    public function sendMt($msisdn, Array $data);
+    public function sendMt($msisdn, array $data);
 
-    public function charge($msisdn, Array $data);
+    public function charge($msisdn, array $data);
 
-    public function sendOtp($msisdn, Array $data);
+    public function sendOtp($msisdn, array $data);
 
-    public function confirmOtp($msisdn, $code, Array $data);
+    public function sendBatchMt(array $msisdn, array $data);
+
+    public function confirmOtp($msisdn, $code, array $data);
 
     public function delivery(Request $request);
 

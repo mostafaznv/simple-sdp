@@ -3,6 +3,7 @@
 namespace Mostafaznv\SimpleSDP\AKO;
 
 use GuzzleHttp\Client as Guzzle;
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Validation\Rule;
 use Mostafaznv\SimpleSDP\Enum;
 use Mostafaznv\SimpleSDP\SdpAbstract;
@@ -34,7 +35,7 @@ class AKO extends SdpAbstract implements SdpInterface
         $this->mobileOriginated = config('simple-sdp.models.mobile_originated');
     }
 
-    public function sendMt($msisdn, Array $data)
+    public function sendMt($msisdn, array $data)
     {
         $this->validate($data, ['content_id' => 'required', 'message' => 'required', 'is_free' => 'nullable|boolean']);
 
@@ -90,7 +91,83 @@ class AKO extends SdpAbstract implements SdpInterface
         return $this->response(false, Enum::UNKNOWN_ERROR_CODE);
     }
 
-    public function charge($msisdn, Array $data)
+    public function sendBatchMt(array $msisdn, array $data)
+    {
+        $this->validate($data, ['message' => 'required', 'content_id' => 'required', 'is_free' => 'nullable|boolean']);
+
+        $this->log('start send batch mt to ' . count($msisdn) . ' users');
+
+        $url = $this->url('bsendmessage/');
+        $description = strtr($this->config['description'], [
+            ':short_code' => $this->config['short_code'],
+            ':content_id' => $data['content_id']
+        ]);
+
+        $list = [];
+        foreach ($msisdn as $value) {
+            $list[] = [
+                'msisdn'     => $value,
+                'message'    => $data['message'],
+                'correlator' => $this->config['short_code'] . '-' . $this->uniqid(),
+            ];
+        }
+
+        $this->log($url);
+
+        $requestBody = [
+            'username'    => $this->config['username'],
+            'password'    => $this->config['password'],
+            'serviceid'   => $this->config['service_id'],
+            'shortcode'   => $this->config['short_code'],
+            'description' => $description,
+            'chargecode'  => $this->config['sub_charging_code'],
+            'amount'      => $this->config['amount'],
+            'currency'    => $this->config['currency'],
+            'is_free'     => isset($data['is_free']) ? $data['is_free'] : $this->config['is_free'],
+            'servicename' => $this->config['service_name'],
+            'list'        => $list
+        ];
+
+        $this->log($requestBody);
+
+        try {
+            $client = new Guzzle();
+            $response = $client->request('post', $url, ['json' => $requestBody]);
+            $result = json_decode($response->getBody());
+
+            if ($response->getStatusCode() == 200) {
+                if ($result->status_code == 0) {
+                    $insertData = [];
+
+                    foreach ($list as $value) {
+                        $insertData[] = [
+                            'msisdn'     => $value['msisdn'],
+                            'message'    => $value['message'],
+                            'message_id' => $value['correlator'],
+                            'type'       => $this->mobileTerminated::DEFAULT_TYPE,
+                            'driver'     => $this->driverName,
+                            'creator_ip' => $this->request->ip(),
+                        ];
+                    }
+
+                    $this->mobileTerminated::insert($insertData);
+
+                    $this->log('done');
+
+                    return $this->response(true, Enum::SUCCESS_CODE);
+                }
+
+                $this->log($result, 'error');
+            }
+        }
+        catch (GuzzleException $e) {
+            $this->log($e->getMessage(), 'error');
+        }
+
+        return $this->response(false, Enum::UNKNOWN_ERROR_CODE);
+    }
+
+    public function charge($msisdn, array $data)
     {
         $this->validate($data, ['content_id' => 'required']);
 
@@ -143,7 +220,7 @@ class AKO extends SdpAbstract implements SdpInterface
         return $this->response(false, Enum::UNKNOWN_ERROR_CODE);
     }
 
-    public function sendOtp($msisdn, Array $data)
+    public function sendOtp($msisdn, array $data)
     {
         $this->validate($data, ['content_id' => 'required']);
 
@@ -207,7 +284,7 @@ class AKO extends SdpAbstract implements SdpInterface
         return $this->response(false, Enum::UNKNOWN_ERROR_CODE);
     }
 
-    public function confirmOtp($msisdn, $code, Array $data)
+    public function confirmOtp($msisdn, $code, array $data)
     {
         $this->validate($data, ['content_id' => 'required']);
 
