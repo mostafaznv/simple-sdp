@@ -35,7 +35,7 @@ class AKO extends SdpAbstract implements SdpInterface
         $this->mobileOriginated = config('simple-sdp.models.mobile_originated');
     }
 
-    public function sendMt($msisdn, array $data)
+    public function sendMt($msisdn, Array $data)
     {
         $this->validate($data, ['content_id' => 'required', 'message' => 'required', 'is_free' => 'nullable|boolean']);
 
@@ -63,7 +63,7 @@ class AKO extends SdpAbstract implements SdpInterface
             'servicename' => $this->config['service_name'],
         ];
 
-        $this->log($requestBody);
+        $this->log(json_encode($requestBody));
 
         $client = new Guzzle();
         $response = $client->request('POST', $url, ['form_params' => $requestBody]);
@@ -72,10 +72,14 @@ class AKO extends SdpAbstract implements SdpInterface
         if ($response->getStatusCode() == 200) {
             if ($result->status_code == 0) {
                 $mt = new $this->mobileTerminated;
+                $connection = (!empty($this->config['database']))?$this->config['database']:null;
+                if($connection){
+                    $mt->setConnection($connection);
+                }
                 $mt->msisdn = $msisdn;
                 $mt->message = $data['message'];
                 $mt->message_id = $requestBody['correlator'];
-                $mt->type = $this->mobileTerminated::DEFAULT_TYPE;
+                $mt->type = (isset($data['type']))?$data['type']:$this->mobileTerminated::DEFAULT_TYPE;
                 $mt->driver = $this->driverName;
                 $mt->creator_ip = $this->request->ip();
                 $mt->save();
@@ -86,7 +90,7 @@ class AKO extends SdpAbstract implements SdpInterface
             }
         }
 
-        $this->log($result, 'error');
+        $this->log(json_encode($result), 'error');
 
         return $this->response(false, Enum::UNKNOWN_ERROR_CODE);
     }
@@ -128,7 +132,7 @@ class AKO extends SdpAbstract implements SdpInterface
             'list'        => $list
         ];
 
-        $this->log($requestBody);
+        $this->log(json_encode($requestBody));
 
         try {
             $client = new Guzzle();
@@ -157,7 +161,7 @@ class AKO extends SdpAbstract implements SdpInterface
                     return $this->response(true, Enum::SUCCESS_CODE);
                 }
 
-                $this->log($result, 'error');
+                $this->log(json_encode($result), 'error');
             }
         }
         catch (GuzzleException $e) {
@@ -167,7 +171,7 @@ class AKO extends SdpAbstract implements SdpInterface
         return $this->response(false, Enum::UNKNOWN_ERROR_CODE);
     }
 
-    public function charge($msisdn, array $data)
+    public function charge($msisdn, Array $data)
     {
         $this->validate($data, ['content_id' => 'required']);
 
@@ -192,7 +196,7 @@ class AKO extends SdpAbstract implements SdpInterface
             'correlator'  => $this->config['charging_code'] . '-' . $this->uniqid(),
         ];
 
-        $this->log($requestBody);
+        $this->log(json_encode($requestBody));
 
         $client = new Guzzle();
         $response = $client->request('POST', $url, ['form_params' => $requestBody]);
@@ -201,6 +205,10 @@ class AKO extends SdpAbstract implements SdpInterface
         if ($response->getStatusCode() == 200) {
             if ($result->status_code == 0) {
                 $mt = new $this->mobileTerminated;
+                $connection = (!empty($this->config['database']))?$this->config['database']:null;
+                if($connection){
+                    $mt->setConnection($connection);
+                }
                 $mt->msisdn = $msisdn;
                 $mt->message = '';
                 $mt->message_id = $requestBody['correlator'];
@@ -215,12 +223,12 @@ class AKO extends SdpAbstract implements SdpInterface
             }
         }
 
-        $this->log($result, 'error');
+        $this->log(json_encode($result), 'error');
 
         return $this->response(false, Enum::UNKNOWN_ERROR_CODE);
     }
 
-    public function sendOtp($msisdn, array $data)
+    public function sendOtp($msisdn, Array $data)
     {
         $this->validate($data, ['content_id' => 'required']);
 
@@ -241,7 +249,7 @@ class AKO extends SdpAbstract implements SdpInterface
             'amount'        => config('settings.amount'),
         ];
 
-        $this->log($requestBody);
+        $this->log(json_encode($requestBody));
 
         $client = new Guzzle();
         $response = $client->request('POST', $url, ['form_params' => $requestBody]);
@@ -252,11 +260,15 @@ class AKO extends SdpAbstract implements SdpInterface
             $statusCode = $result->data->statusInfo->statusCode;
             if ($statusCode == 200) {
                 $mt = new $this->mobileTerminated;
+                $connection = (!empty($this->config['database']))?$this->config['database']:null;
+                if($connection){
+                    $mt = $mt->setConnection($connection);
+                }
                 $mt->msisdn = $msisdn;
                 $mt->message = $data['content_id'];
                 $mt->message_id = $requestBody['referencecode'];
                 $mt->transaction_id = $result->data->statusInfo->OTPTransactionId;
-                $mt->type = $this->mobileTerminated::OTP_TYPE;
+                $mt->type = isset($data['type']) ? $data['type'] : $this->mobileTerminated::OTP_TYPE;
                 $mt->driver = $this->driverName;
                 $mt->creator_ip = $this->request->ip();
                 $mt->save();
@@ -284,14 +296,30 @@ class AKO extends SdpAbstract implements SdpInterface
         return $this->response(false, Enum::UNKNOWN_ERROR_CODE);
     }
 
-    public function confirmOtp($msisdn, $code, array $data)
+    public function confirmOtp($msisdn, $code, Array $data)
     {
         $this->validate($data, ['content_id' => 'required']);
 
         $this->log("confirm otp started for $msisdn with code $code");
 
         $timeout = Carbon::now()->subMinute($this->config['confirm_otp_timeout']);
-        $mt = $this->mobileTerminated::where('msisdn', $msisdn)->where('type', $this->mobileTerminated::OTP_TYPE)->whereDate('created_at', '<=', $timeout)->orderby('id', 'desc')->first();
+        $type = (isset($data['type']))?$data['type']:$this->mobileTerminated::OTP_TYPE;
+
+        info('Type of MT: '.$type);
+        info('Type of msisdn: '.$msisdn);
+
+        $mt = $this->mobileTerminated::where('msisdn', $msisdn)->where('type', $type)->whereDate('created_at', '<=', $timeout)->orderby('id', 'desc');
+        $connection = (!empty($this->config['database']))?$this->config['database']:null;
+        info('Connection is: '.$connection);
+
+        if($connection){
+            $this->log('connection is not empty'.$connection);
+            $mt->on($connection);
+        }
+
+        $mt = $mt->first();
+        info('mt is as bellow');
+        info(json_encode($mt));
 
         if ($mt) {
             $url = $this->url('otp-confirmation/');
@@ -308,26 +336,31 @@ class AKO extends SdpAbstract implements SdpInterface
             ];
 
             $client = new Guzzle();
+            try{
+                $response = $client->request('POST', $url, ['form_params' => $data]);
 
-            $response = $client->request('POST', $url, ['form_params' => $data]);
-            if ($response->getStatusCode() == 200) {
-                $result = json_decode($response->getBody());
+                if ($response->getStatusCode() == 200) {
+                    $result = json_decode($response->getBody());
+                    $this->log($response->getBody());
+                    $status_code = $result->data->statusInfo->statusCode;
+                    if ($status_code == 200) {
+                        $versionName = $this->request->version_name ? $this->request->version_name : null;
+                        $ip = $this->request->ip();
+                        $this->log("type of confirm log: $type");
+                        $this->logConfirmOtp($msisdn,$type, $versionName, $ip, $mc);
 
-                $status_code = $result->data->statusInfo->statusCode;
-
-                if ($status_code == 200) {
-                    $versionName = $this->request->version_name ? $this->request->version_name : null;
-                    $ip = $this->request->ip();
-
-                    $this->logConfirmOtp($msisdn, $this->confirmOtpLog::OTP_APP_TYPE, $versionName, $ip);
-
-                    $this->log('done');
-                    return $this->response(true, Enum::SUCCESS_CODE);
+                        $this->log('done');
+                        return $this->response(true, Enum::SUCCESS_CODE);
+                    }
                 }
+
+                $this->log('unknown error', 'error');
+                return $this->response(false, Enum::UNKNOWN_ERROR_CODE);
+            }catch (\Exception $e){
+                $this->log('Exception', 'error');
+                return $this->response(false, Enum::UNKNOWN_ERROR_CODE);
             }
 
-            $this->log('unknown error', 'error');
-            return $this->response(false, Enum::UNKNOWN_ERROR_CODE);
         }
         else {
             $this->log('mt not found', 'error');
@@ -340,14 +373,15 @@ class AKO extends SdpAbstract implements SdpInterface
         $this->log('delivery received');
 
         $validator = $this->validate($request->all(), [
-            'msisdn'         => ['required', 'digits:12', 'regex:/^989[0-9]{9}$/'],
+            'msisdn'         => ['required','regex:/^tel:989[0-9]{9}$/'],
             'correlator'     => 'required',
             'deliverystatus' => 'required'
         ], false);
 
         if ($validator['status']) {
             $this->log('for ' . $request->msisdn);
-            $mt = $this->mobileTerminated::where('msisdn', $request->msisdn)->where('message_id', $request->correlator)->first();
+            $msisdn = trim(str_replace('tel:','',$request->msisdn));
+            $mt = $this->mobileTerminated::where('msisdn', $msisdn)->where('message_id', $request->correlator)->first();
 
             if ($mt) {
                 $mt->delivery_status = $request->deliverystatus;
@@ -426,8 +460,8 @@ class AKO extends SdpAbstract implements SdpInterface
                 Rule::in([$this->config['short_code']])
             ],
             'message'     => 'required|string',
-            'partnername' => 'string',
-            'trans_id'    => 'string',
+            /* 'partnername' => 'string',
+             'trans_id'    => 'string',*/
         ], false);
 
         if ($validator['status']) {
