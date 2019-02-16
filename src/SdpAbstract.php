@@ -159,7 +159,7 @@ abstract class SdpAbstract
      */
     protected function uniqid()
     {
-        return uniqid(rand(), true);
+        return uniqid(rand(), false);
     }
 
     /**
