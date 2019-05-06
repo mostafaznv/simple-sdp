@@ -3,6 +3,7 @@
 namespace Mostafaznv\SimpleSDP;
 
 use Mostafaznv\SimpleSDP\AKO\AKO;
+use Mostafaznv\SimpleSDP\Rashin\Rashin;
 use Mostafaznv\SimpleSDP\SSDP\SSDP;
 
 class Enum
@@ -10,10 +11,27 @@ class Enum
     const AKO       = 'AKO';
     const AKO_CLASS = AKO::class;
 
+    const RASHIN       = 'RASHIN';
+    const RASHIN_CLASS = Rashin::class;
+
+
     const SSDP            = 'SSDP';
     const SSDP_CLASS      = SSDP::class;
     const SSDP_OTP_EXISTS = 'PARTNER API GATEWAY RECORD ALREADY EXIST.';
 
+    const SUB_STATUS          = 0;
+    const UNSUB_CHARGE_STATUS = 5;
+
+    const APP_CHANNEL   = 'APP';
+    const WAP_CHANNEL   = 'WAP';
+    const SMS_CHANNEL   = 'SMS';
+    const CRM_CHANNEL   = 'CRM';
+    const OTP_CHANNEL   = 'OTP';
+    const TAJMI_CHANNEL = 'TAJMI';
+
+    const SUB_EVENT_TYPE    = 1.1;
+    const UNSUB_EVENT_TYPE  = 1.2;
+    const CHARGE_EVENT_TYPE = 1.5;
 
     const ALREADY_EXISTS_CODE   = 1;
     const MT_NOT_FOUND_CODE     = 2;

@@ -83,9 +83,9 @@ return [
         'confirm_otp_timeout'       => 5,
         'is_free'                   => true,
         'trans_prefix'              => 'mt',
-        'database'                  =>null,
+        'database'                  => null,
     ],
-    
+
     /*
     |--------------------------------------------------------------------------
     | SSDP Configuration
@@ -109,6 +109,32 @@ return [
         'unsub_charging_code'       => 'unsub_charging_code',
         'message'                   => 'test',
         'confirm_otp_timeout'       => 5,
-        'database'                  =>null,
-    ]
+        'database'                  => null,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | RASHIN Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Configuration values for RASHIN
+    |
+    */
+
+    'rashin' => [
+        'baseurl'              => 'https://sdp.rashin.org/Api/',
+        'service_title'        => 'SERVICE_TITLE',
+        'service_name'         => 'SERVICE_NAME',
+        'service_id'           => 'SERVICE_ID',
+        'service_key'          => 'SERVICE_KEY',
+        'short_code'           => 'SHORT_CODE',
+        'register_charge_code' => 'REGISTER_CHARGE_CODE',
+        'renewal_charge_code'  => 'RENEWAL_CHARGE_CODE',
+        'unsub_charge_code'    => 'UNSUB_CHARGE_CODE',
+        'price'                => 5000,
+        'currency'             => 'RLS',
+        'confirm_otp_timeout'  => 5,
+        'trans_prefix'         => 'mt',
+        'database'             => null,
+    ],
 ];

@@ -5,6 +5,7 @@ namespace Mostafaznv\SimpleSDP;
 
 use Mostafaznv\SimpleSDP\AKO\AKO;
 use Mostafaznv\SimpleSDP\Exceptions\DriverNotFoundException;
+use Mostafaznv\SimpleSDP\Rashin\Rashin;
 use Mostafaznv\SimpleSDP\SSDP\SSDP;
 
 class SdpResolver
@@ -12,7 +13,7 @@ class SdpResolver
     /**
      * Keep an instance of current driver.
      *
-     * @var AKO, SSDP
+     * @var AKO, SSDP, RASHIN
      */
     public $driver;
 
@@ -52,6 +53,7 @@ class SdpResolver
         return [
             Enum::AKO,
             Enum::SSDP,
+            Enum::RASHIN,
         ];
     }
 
@@ -96,6 +98,11 @@ class SdpResolver
         else if ($driver InstanceOf SSDP) {
             $name = Enum::SSDP;
             $config = config('simple-sdp.ssdp');
+            $this->driver = $driver;
+        }
+        else if ($driver InstanceOf Rashin) {
+            $name = Enum::RASHIN;
+            $config = config('simple-sdp.rashin');
             $this->driver = $driver;
         }
         elseif ($class = $this->validateDriver($driver)) {
