@@ -246,7 +246,7 @@ class AKO extends SdpAbstract implements SdpInterface
             'contentid'     => $data['content_id'],
             'chargecode'    => $this->config['sub_charging_code'],
             'description'   => 'OTP',
-            'amount'        => config('settings.amount'),
+            'amount'        => $this->config['amount'],
         ];
 
         $this->log(json_encode($requestBody));
@@ -305,12 +305,8 @@ class AKO extends SdpAbstract implements SdpInterface
         $timeout = Carbon::now()->subMinute($this->config['confirm_otp_timeout']);
         $type = (isset($data['type']))?$data['type']:$this->mobileTerminated::OTP_TYPE;
 
-        info('Type of MT: '.$type);
-        info('Type of msisdn: '.$msisdn);
-
         $mt = $this->mobileTerminated::where('msisdn', $msisdn)->where('type', $type)->whereDate('created_at', '<=', $timeout)->orderby('id', 'desc');
         $connection = (!empty($this->config['database']))?$this->config['database']:null;
-        info('Connection is: '.$connection);
 
         if($connection){
             $this->log('connection is not empty'.$connection);
@@ -318,8 +314,6 @@ class AKO extends SdpAbstract implements SdpInterface
         }
 
         $mt = $mt->first();
-        info('mt is as bellow');
-        info(json_encode($mt));
 
         if ($mt) {
             $url = $this->url('otp-confirmation/');
@@ -347,7 +341,7 @@ class AKO extends SdpAbstract implements SdpInterface
                         $versionName = $this->request->version_name ? $this->request->version_name : null;
                         $ip = $this->request->ip();
                         $this->log("type of confirm log: $type");
-                        $this->logConfirmOtp($msisdn,$type, $versionName, $ip, $mc);
+                        $this->logConfirmOtp($msisdn,$type, $versionName, $ip);
 
                         $this->log('done');
                         return $this->response(true, Enum::SUCCESS_CODE);
