@@ -19,6 +19,7 @@ SimpleSDP is a laravel package that makes it easy to send SMS and OTP(One Time P
 ## Available Drivers
 - AKO (ako)
 - SSDP (ssdp)
+- Rashin
 
 ## Installation
 
