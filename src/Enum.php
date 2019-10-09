@@ -3,6 +3,7 @@
 namespace Mostafaznv\SimpleSDP;
 
 use Mostafaznv\SimpleSDP\AKO\AKO;
+use Mostafaznv\SimpleSDP\FanapPlus\FanapPlus;
 use Mostafaznv\SimpleSDP\Rashin\Rashin;
 use Mostafaznv\SimpleSDP\SSDP\SSDP;
 
@@ -14,6 +15,9 @@ class Enum
     const RASHIN       = 'RASHIN';
     const RASHIN_CLASS = Rashin::class;
 
+    const FANAPPLUS       = 'FANAPPLUS';
+    const FANAPPLUS_CLASS = FanapPlus::class;
+
 
     const SSDP            = 'SSDP';
     const SSDP_CLASS      = SSDP::class;
@@ -22,12 +26,16 @@ class Enum
     const SUB_STATUS          = 0;
     const UNSUB_CHARGE_STATUS = 5;
 
-    const APP_CHANNEL   = 'APP';
-    const WAP_CHANNEL   = 'WAP';
-    const SMS_CHANNEL   = 'SMS';
-    const CRM_CHANNEL   = 'CRM';
-    const OTP_CHANNEL   = 'OTP';
-    const TAJMI_CHANNEL = 'TAJMI';
+    const APP_CHANNEL       = 'APP';
+    const WAP_CHANNEL       = 'WAP';
+    const SMS_CHANNEL       = 'SMS';
+    const CRM_CHANNEL       = 'CRM';
+    const OTP_CHANNEL       = 'OTP';
+    const TAJMI_CHANNEL     = 'TAJMI';
+    const CP_CHANNEL        = 'CP';
+    const USSD_CHANNEL      = 'USSD';
+    const OPERATOR_CHANNEL  = 'OPERATOR';
+    const HAMRAHMAN_CHANNEL = 'HAMRAHMAN';
 
     const SUB_EVENT_TYPE    = 1.1;
     const UNSUB_EVENT_TYPE  = 1.2;

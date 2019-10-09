@@ -55,6 +55,27 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | RSA Keys
+    |--------------------------------------------------------------------------
+    |
+    | public/private keys pem files
+    |
+    */
+
+    'rsa' => [
+        'public'  => '', // path to public key pem file
+        'private' => '', // path to private key pem file
+
+        'fanap' => [
+            'public' => '', // path to public key pem file
+        ],
+
+        'algo' => OPENSSL_ALGO_SHA1,
+    ],
+
+
+    /*
+    |--------------------------------------------------------------------------
     | AKO Configuration
     |--------------------------------------------------------------------------
     |
@@ -136,5 +157,27 @@ return [
         'confirm_otp_timeout'  => 5,
         'trans_prefix'         => 'mt',
         'database'             => null,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | FANAP PLUS Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Configuration values for FanapPlus
+    |
+    */
+
+    'fanapplus' => [
+        'baseurl'             => 'https://xcp.fanap.plus/api/v5.0/',
+        'uid'                 => 'uid',
+        'service-id'          => 'service-id',
+        'app-id'              => 'app-id',
+        'channel-type'        => 'Imi',
+        'priority'            => 'Normal',
+        'confirm-otp-timeout' => 5,
+        'trans_prefix'        => 'mt',
+        'login-mode'          => true,
+        'database'            => null,
     ],
 ];

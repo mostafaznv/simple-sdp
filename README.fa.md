@@ -18,6 +18,8 @@
 ## درایورهای پشتیبانی شده
 - AKO (ako)
 - SSDP (ssdp)
+- Rashin
+- FanapPlus
 
 ## روش نصب
 
